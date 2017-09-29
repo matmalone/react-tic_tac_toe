@@ -94,8 +94,19 @@ class Game extends React.Component {
       const desc = move ?
         'Move #' + move :
         'Game start';
+
+      let clsName;
+      if (move === this.state.stepNumber)
+      {
+        clsName = 'selected';
+      }
+      else 
+      {
+        clsName = 'notSelected';
+      }
+
       return (
-        <li key={move}>
+        <li key={move} className={clsName}>
           <a href={'#' + move} onClick={() => this.jumpTo(move)}>{desc}</a>
         </li>
       );
