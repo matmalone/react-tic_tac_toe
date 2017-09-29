@@ -52,6 +52,7 @@ class Game extends React.Component {
         squares: Array(9).fill(null),
       }],
       stepNumber: 0,
+      sortAsc: true,
       xIsNext: true,
     };
   }
@@ -83,6 +84,13 @@ class Game extends React.Component {
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
     });
+  }
+
+  handleOrderClick(_sortAsc)
+  {
+    console.log(_sortAsc);
+    this.setState({sortAsc: _sortAsc});
+
   }
 
   render() {
@@ -123,7 +131,9 @@ class Game extends React.Component {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
-
+    // reverse the order depending on how the radio button is checked
+    if (!this.state.sortAsc) moves.reverse();
+    
     return (
       <div className="game">
         <div className="game-board">
@@ -134,7 +144,26 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div className="status">{status}</div>
-          <ol>{moves}</ol>
+          <div className="moves-container">
+            <div>
+              <input type="radio" name="moves-order" id="moves-order-asc" value="asc" 
+                onClick={ () => {
+                  this.handleOrderClick(true);
+                }} 
+                defaultChecked 
+              />
+              <label htmlFor="moves-order-asc">Ascending</label>
+            </div>
+            <div>
+              <input type="radio" name="moves-order" id="moves-order-desc" value="desc" 
+                onClick={ () => {
+                  this.handleOrderClick(false);
+                }} 
+              />
+              <label htmlFor="moves-order-desc">Descending</label>
+            </div>
+            <ol>{moves}</ol>
+          </div>
         </div>
       </div>
     );
