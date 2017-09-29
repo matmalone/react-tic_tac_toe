@@ -11,6 +11,58 @@ function Square(props) {
   );
 }
 
+function History(props) {
+  const moves = props.history.map((step, move) => 
+  {
+    const desc = move ?
+      'Move #' + move :
+      'Game start';
+
+    let clsName;
+    if (move === props.stepNumber)
+    {
+      clsName = 'selected';
+    }
+    else 
+    {
+      clsName = 'notSelected';
+    }
+
+    return (
+      <li key={move} className={clsName}>
+        <a href={'#' + move} onClick={() => props.jumpTo(move)}>{desc}</a>
+      </li>
+    );
+  });
+
+  // reverse the order depending on how the radio button is checked
+  if (!props.sortAsc) moves.reverse();
+    
+
+  return (
+    <div className="moves-container">
+      <div>
+        <input type="radio" name="moves-order" id="moves-order-asc" value="asc" 
+          onClick={ () => {
+            props.handleOrderClick(true);
+          }} 
+          defaultChecked 
+        />
+        <label htmlFor="moves-order-asc">Ascending</label>
+      </div>
+      <div>
+        <input type="radio" name="moves-order" id="moves-order-desc" value="desc" 
+          onClick={ () => {
+            props.handleOrderClick(false);
+          }} 
+        />
+        <label htmlFor="moves-order-desc">Descending</label>
+      </div>
+      <ol>{moves}</ol>
+    </div>
+  );
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     return (
@@ -98,29 +150,6 @@ class Game extends React.Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
 
-    const moves = history.map((step, move) => 
-    {
-      const desc = move ?
-        'Move #' + move :
-        'Game start';
-
-      let clsName;
-      if (move === this.state.stepNumber)
-      {
-        clsName = 'selected';
-      }
-      else 
-      {
-        clsName = 'notSelected';
-      }
-
-      return (
-        <li key={move} className={clsName}>
-          <a href={'#' + move} onClick={() => this.jumpTo(move)}>{desc}</a>
-        </li>
-      );
-    });
-
     let status;
     if (winner)
     {
@@ -131,9 +160,6 @@ class Game extends React.Component {
       status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
     }
 
-    // reverse the order depending on how the radio button is checked
-    if (!this.state.sortAsc) moves.reverse();
-    
     return (
       <div className="game">
         <div className="game-board">
@@ -144,26 +170,13 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div className="status">{status}</div>
-          <div className="moves-container">
-            <div>
-              <input type="radio" name="moves-order" id="moves-order-asc" value="asc" 
-                onClick={ () => {
-                  this.handleOrderClick(true);
-                }} 
-                defaultChecked 
-              />
-              <label htmlFor="moves-order-asc">Ascending</label>
-            </div>
-            <div>
-              <input type="radio" name="moves-order" id="moves-order-desc" value="desc" 
-                onClick={ () => {
-                  this.handleOrderClick(false);
-                }} 
-              />
-              <label htmlFor="moves-order-desc">Descending</label>
-            </div>
-            <ol>{moves}</ol>
-          </div>
+          <History
+            history={history}
+            stepNumber={this.state.stepNumber}
+            sortAsc={this.state.sortAsc}
+            handleOrderClick={(sortAsc) => {this.handleOrderClick(sortAsc)}}
+            jumpTo={(step) => {this.jumpTo(step)}}
+          />
         </div>
       </div>
     );
