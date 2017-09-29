@@ -18,15 +18,9 @@ function History(props) {
       'Move #' + move :
       'Game start';
 
-    let clsName;
-    if (move === props.stepNumber)
-    {
-      clsName = 'selected';
-    }
-    else 
-    {
-      clsName = 'notSelected';
-    }
+    const clsName = move === props.stepNumber ?
+      'selected' :
+      'notSelected';
 
     return (
       <li key={move} className={clsName}>
