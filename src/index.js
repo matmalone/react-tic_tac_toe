@@ -135,9 +135,7 @@ class Game extends React.Component {
 
   handleOrderClick(_sortAsc)
   {
-    console.log(_sortAsc);
     this.setState({sortAsc: _sortAsc});
-
   }
 
   render() {
