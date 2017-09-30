@@ -37,18 +37,19 @@ function History(props) {
     <div className="moves-container">
       <div>
         <input type="radio" name="moves-order" id="moves-order-asc" value="asc" 
-          onClick={ () => {
+          onChange={ () => {
             props.handleOrderClick(true);
           }} 
-          defaultChecked 
+          checked={props.sortAsc} 
         />
         <label htmlFor="moves-order-asc">Ascending</label>
       </div>
       <div>
         <input type="radio" name="moves-order" id="moves-order-desc" value="desc" 
-          onClick={ () => {
+          onChange={ () => {
             props.handleOrderClick(false);
           }} 
+          checked={!props.sortAsc} 
         />
         <label htmlFor="moves-order-desc">Descending</label>
       </div>
